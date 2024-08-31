@@ -19,7 +19,7 @@ export async function POST(req: NextRequest) {
         const savedUser= await user.save();
         console.log(savedUser);
         // verify email and send verification email
-        await sendMail(email, 'verify', `Click on the link to verify your email: http://localhost:3000/verify/${email}`);
+        await sendMail(email, 'VERIFY', `Click on the link to verify your email: http://localhost:3000/verify/${email}`);
         return NextResponse.json({ message: 'User created successfully' , success: true , user: savedUser});
     } catch (error) {
         console.error('Failed to connect to the database:', error);
