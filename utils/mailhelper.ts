@@ -3,6 +3,7 @@ import nodemailer from 'nodemailer';
 import bcrypt from 'bcryptjs';
 export const sendMail = async (to: string, subject: string, userId:any) => {
     try {
+        // step 3
         const hashToken = await bcrypt.hash(userId.toString(), 10);
         if (subject === 'VERIFY') {
             // update the user with the verification token and expiry
@@ -11,6 +12,7 @@ export const sendMail = async (to: string, subject: string, userId:any) => {
             // update the user with the forgot password token and expiry
             const user = await User.findByIdAndUpdate(userId, {forgotPasswordToken: hashToken, forgotPasswordTokenExpiry: Date.now() + 3600000});
         }
+        // step 1
         // create reusable transporter object using the default SMTP transport
         var transporter = nodemailer.createTransport({
             host: process.env.SMTP_HOST,
@@ -20,7 +22,7 @@ export const sendMail = async (to: string, subject: string, userId:any) => {
               pass: process.env.SMTP_PASS
             }
           });
-
+        //   step 2
         const info = await transporter.sendMail({
             from: process.env.SMTP_USER,
             to: to,
@@ -36,6 +38,7 @@ export const sendMail = async (to: string, subject: string, userId:any) => {
         return info;
         
     } catch (error) {
+        // step 0
         console.error('Error occurred while sending the email:', error);
         throw error;
     }

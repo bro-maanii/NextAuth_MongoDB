@@ -4,6 +4,8 @@ import { NextRequest, NextResponse } from 'next/server'
 import bcrypt from 'bcryptjs';
 import {sendMail} from '@/utils/mailhelper'
 
+// Connect to the database before running the API route handlers 
+// (Always Connect to DB before defining API routes)
 connectToDB();
 
 export async function POST(req: NextRequest) {
@@ -19,7 +21,7 @@ export async function POST(req: NextRequest) {
         const savedUser= await user.save();
         console.log(savedUser);
         // verify email and send verification email
-        await sendMail(email, 'VERIFY', `Click on the link to verify your email: http://localhost:3000/verify/${email}`);
+        await sendMail(email, 'VERIFY', savedUser._id);
         return NextResponse.json({ message: 'User created successfully' , success: true , user: savedUser});
     } catch (error) {
         console.error('Failed to connect to the database:', error);
