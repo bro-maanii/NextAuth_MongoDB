@@ -1,5 +1,4 @@
 import connectToDB from '@/utils/db_connect'
-import User from '@/models/Users/Usermodel';
 import { NextRequest, NextResponse } from 'next/server'
 
 connectToDB();
