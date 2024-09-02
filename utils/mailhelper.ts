@@ -7,10 +7,11 @@ export const sendMail = async (to: string, subject: string, userId:any) => {
         const hashToken = await bcrypt.hash(userId.toString(), 10);
         if (subject === 'VERIFY') {
             // update the user with the verification token and expiry
-            const user = await User.findByIdAndUpdate(userId, {verificationToken: hashToken, verificationTokenExpiry: Date.now() + 2*3600000});
+            const user = await User.findByIdAndUpdate(userId, 
+               { $set: {verificationToken: hashToken, verificationTokenExpiry: Date.now() + 2*3600000}});
         }else if(subject === 'RESET'){
             // update the user with the forgot password token and expiry
-            const user = await User.findByIdAndUpdate(userId, {forgotPasswordToken: hashToken, forgotPasswordTokenExpiry: Date.now() + 3600000});
+            const user = await User.findByIdAndUpdate(userId,{ $set: {forgotPasswordToken: hashToken, forgotPasswordTokenExpiry: Date.now() + 3600000}});
         }
         // step 1
         // create reusable transporter object using the default SMTP transport
