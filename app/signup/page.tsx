@@ -18,6 +18,7 @@ function SingnupPage() {
   });
   const [DisabledSignup, setDisabledSignup] = useState(true);
   const [processing,setProcessing] = useState(false)
+  const [validUser, setValidUser] = useState(true);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setUser({ ...user, [e.target.name]: e.target.value });
@@ -29,8 +30,18 @@ function SingnupPage() {
         const response = await axios.post("http://localhost:3000/api/users/signup", user);
         setProcessing(true)
         console.log(response);
-        router.push('/login');
-        console.log("User created successfully");
+        if (response.data.success === false) {
+            console.log(response.data.message);
+            setProcessing(false)
+            setValidUser(false);
+            return;
+        }else{
+          router.push('/login');
+          console.log("User created successfully");
+          setProcessing(true)
+          setValidUser(true);
+        }
+        
 
     } catch (error) {
         console.log(error);
@@ -52,8 +63,12 @@ function SingnupPage() {
   return (
     <section className="flex justify-center items-center h-svh w-full bg-gradient-to-r from-blue-500 to-purple-500">
       <div className="flex flex-col w-full h-fit max-w-xl  p-8 bg-white shadow-lg rounded-lg">
+        <h1 className="text-4xl text-center w-full">Sign Up</h1>
         {
-            (processing)? <h1 className="text-4xl text-center w-full">Processing...</h1>:<h1 className="text-4xl text-center w-full">Sign Up</h1>
+            (processing)? <h1 className="text-4xl text-center w-full">Processing...</h1> : null
+        }
+        {
+          !validUser && <p className="text-center text-red-500">User already exists</p>
         }
         <div
           className="flex flex-col justify-center mx-auto gap-6 w-full"

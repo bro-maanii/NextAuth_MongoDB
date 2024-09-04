@@ -11,10 +11,14 @@ export async function POST(req: NextRequest) {
     try {
         const {email, password} = await req.json();
         const user = await User.findOne({email});
-        if(!user && !!user.isVerified){
+        if(!user){
             return NextResponse.json({ error: 'Invalid Credentials' , success: false });
         }
         console.log("User", user);
+        // check if user is verified
+        if(!user.isVerified){
+            return NextResponse.json({ error: 'User is not verified' , success: false });
+        }
         // Check if password matches
         const isMatch = await bycrpt.compare(password, user.password);
         if(!isMatch){
