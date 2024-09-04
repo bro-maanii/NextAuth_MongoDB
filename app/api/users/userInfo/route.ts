@@ -14,16 +14,16 @@ export async function POST(req: NextRequest) {
         // If user is found, return user data with 200 status code
         const token = req.cookies.get('token')?.value || "";
         if(!token){
-            return NextResponse.json({ msg: 'No Token Found' }, { status: 401 });
+            return NextResponse.json({ msg: 'No Token Found' , success: false}, { status: 401 });
         }
         const decoded : any = jwt.verify(token, process.env.hashSecret!);
         // decoded returns {userId: 'id'}(real token)
         // {userId: user._id}(real token)
         const user = await User.findOne({_id:decoded.userId}).select('-password');
         if(!user){
-            return NextResponse.json({ msg: 'No User Found' }, { status: 404 });
+            return NextResponse.json({ msg: 'No User Found' , success: false}, { status: 404 });
         }
-        return NextResponse.json({ user: user }, { status: 200 });
+        return NextResponse.json({ user: user , success: true}, { status: 200 });
     
     } catch (error: any) {
         return NextResponse.json({ msg: 'Server Error' + error}, { status: 500 });
