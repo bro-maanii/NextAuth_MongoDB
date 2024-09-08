@@ -12,7 +12,8 @@ export default function ProfilePage() {
       const res = await axios.post("/api/users/logout");
       if (res.data.success === true) {
         console.log(res);
-        router.push("/login");
+        // router.push("/login");
+        router.refresh();
       } else {
         console.log(res.data.msg);
       }

@@ -49,9 +49,9 @@ function LoginPage() {
   return (
     <section className="flex justify-center items-center h-svh w-full bg-gradient-to-r from-blue-500 to-purple-500">
       <div className="flex flex-col w-full h-fit max-w-xl  p-8 bg-white shadow-lg rounded-lg">
-        <h1 className="text-4xl text-center w-full">Sign In</h1>
+        <h1 className="text-3xl text-center w-full pb-4">Sign In</h1>
         {
-          !validUser && <p className="text-center text-red-500">Invalid Credentials or User is not verified</p>
+          !validUser && <p className="text-center bg-gray-200 p-4 font-mono text-red-600">Invalid Credentials or User is not verified</p>
         }
         <div
           className="flex flex-col justify-center mx-auto gap-6 w-full"
